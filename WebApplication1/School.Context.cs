@@ -218,5 +218,56 @@ namespace WebApplication1
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
+    
+        public virtual int Register(string userEmail, string userPassword, Nullable<bool> userIsAdmin)
+        {
+            var userEmailParameter = userEmail != null ?
+                new ObjectParameter("UserEmail", userEmail) :
+                new ObjectParameter("UserEmail", typeof(string));
+    
+            var userPasswordParameter = userPassword != null ?
+                new ObjectParameter("UserPassword", userPassword) :
+                new ObjectParameter("UserPassword", typeof(string));
+    
+            var userIsAdminParameter = userIsAdmin.HasValue ?
+                new ObjectParameter("UserIsAdmin", userIsAdmin) :
+                new ObjectParameter("UserIsAdmin", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Register", userEmailParameter, userPasswordParameter, userIsAdminParameter);
+        }
+    
+        public virtual ObjectResult<User> RegisterUser(string userEmail, string userPassword, Nullable<bool> userIsAdmin)
+        {
+            var userEmailParameter = userEmail != null ?
+                new ObjectParameter("UserEmail", userEmail) :
+                new ObjectParameter("UserEmail", typeof(string));
+    
+            var userPasswordParameter = userPassword != null ?
+                new ObjectParameter("UserPassword", userPassword) :
+                new ObjectParameter("UserPassword", typeof(string));
+    
+            var userIsAdminParameter = userIsAdmin.HasValue ?
+                new ObjectParameter("UserIsAdmin", userIsAdmin) :
+                new ObjectParameter("UserIsAdmin", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<User>("RegisterUser", userEmailParameter, userPasswordParameter, userIsAdminParameter);
+        }
+    
+        public virtual ObjectResult<User> RegisterUser(string userEmail, string userPassword, Nullable<bool> userIsAdmin, MergeOption mergeOption)
+        {
+            var userEmailParameter = userEmail != null ?
+                new ObjectParameter("UserEmail", userEmail) :
+                new ObjectParameter("UserEmail", typeof(string));
+    
+            var userPasswordParameter = userPassword != null ?
+                new ObjectParameter("UserPassword", userPassword) :
+                new ObjectParameter("UserPassword", typeof(string));
+    
+            var userIsAdminParameter = userIsAdmin.HasValue ?
+                new ObjectParameter("UserIsAdmin", userIsAdmin) :
+                new ObjectParameter("UserIsAdmin", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<User>("RegisterUser", mergeOption, userEmailParameter, userPasswordParameter, userIsAdminParameter);
+        }
     }
 }

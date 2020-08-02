@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="School.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="School.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="ClassId" />
@@ -91,6 +91,11 @@
           <Parameter Name="UserIsAdmin" Type="bit" Mode="In" />
         </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="Register" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserPassword" Type="varchar" Mode="In" />
+          <Parameter Name="UserIsAdmin" Type="bit" Mode="In" />
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -135,8 +140,7 @@
             <End Role="UserClass" EntitySet="UserClass" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="School" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -237,6 +241,16 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="Register">
+            <Parameter Name="UserEmail" Mode="In" Type="String" />
+            <Parameter Name="UserPassword" Mode="In" Type="String" />
+            <Parameter Name="UserIsAdmin" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="RegisterUser" EntitySet="Users" ReturnType="Collection(School.User)">
+            <Parameter Name="UserEmail" Mode="In" Type="String" />
+            <Parameter Name="UserPassword" Mode="In" Type="String" />
+            <Parameter Name="UserIsAdmin" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -323,6 +337,8 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="School.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="School.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="Register" FunctionName="School.Store.Register" />
+          <FunctionImportMapping FunctionImportName="RegisterUser" FunctionName="School.Store.Register" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
